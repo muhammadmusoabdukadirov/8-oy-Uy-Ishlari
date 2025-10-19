@@ -1,51 +1,127 @@
 from rest_framework import serializers
 from .models import *
 
-# Hammasi bir xil formatda
-class RestoranSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Restoran
-        fields = "__all__"
-
 class MenyuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menyu
         fields = "__all__"
+
+
+class RestoranSerializer(serializers.ModelSerializer):
+    menyular = MenyuSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Restoran
+        fields = "__all__"
+        depth = 1 
+
 
 class IdishSerializer(serializers.ModelSerializer):
     class Meta:
         model = Idish
         fields = "__all__"
 
+
+class MenyuDetailSerializer(serializers.ModelSerializer):
+    idishlar = IdishSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Menyu
+        fields = "__all__"
+        depth = 1
+
+
+class BuyurtmaSerializer(serializers.ModelSerializer):
+    foydalanuvchi = serializers.PrimaryKeyRelatedField(queryset=Foydalanuvchi.objects.all())
+    idish = serializers.PrimaryKeyRelatedField(queryset=Idish.objects.all())
+
+    class Meta:
+        model = Buyurtma
+        fields = "__all__"
+
+
 class FoydalanuvchiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Foydalanuvchi
         fields = "__all__"
 
-class BuyurtmaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Buyurtma
-        fields = "__all__"
 
 class HaydovchiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Haydovchi
         fields = "__all__"
 
+
 class YetkazibBerishSerializer(serializers.ModelSerializer):
     class Meta:
         model = YetkazibBerish
         fields = "__all__"
+
 
 class TolovSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tolov
         fields = "__all__"
 
+
 class KoribChiqishSerializer(serializers.ModelSerializer):
     class Meta:
         model = KoribChiqish
         fields = "__all__"
+
+# -----------------------------------------------------------------------
+
+# 2 darsdagi serializers domla
+
+# class RestoranSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Restoran
+#         fields = "__all__"
+
+# class MenyuSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Menyu
+#         fields = "__all__"
+
+# class IdishSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Idish
+#         fields = "__all__"
+
+# class FoydalanuvchiSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Foydalanuvchi
+#         fields = "__all__"
+
+# class BuyurtmaSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Buyurtma
+#         fields = "__all__"
+
+# class HaydovchiSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Haydovchi
+#         fields = "__all__"
+
+# class YetkazibBerishSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = YetkazibBerish
+#         fields = "__all__"
+
+# class TolovSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Tolov
+#         fields = "__all__"
+
+# class KoribChiqishSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = KoribChiqish
+#         fields = "__all__"
+
+
+# -----------------------------------------------------------------------
+
+# 1 darsdegi serializers domla
 
 # class RestoranSerializer(serializers.ModelSerializer):
 #     class Meta:
