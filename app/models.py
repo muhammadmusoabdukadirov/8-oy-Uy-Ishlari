@@ -140,3 +140,22 @@ class KoribChiqish(models.Model):
     class Meta:
         verbose_name = "Korib chiqish"
         verbose_name_plural = "Korib chiqishlar"
+
+
+class Like(models.Model):
+    foydalanuvchi = models.ForeignKey("Foydalanuvchi", on_delete=models.CASCADE)
+    idish = models.ForeignKey("Idish", on_delete=models.CASCADE, related_name="likes")
+    like = models.BooleanField(default=True)  
+
+    def __str__(self):
+        return f"{self.foydalanuvchi.ism} -> {self.idish.nom} ({'Like' if self.like else 'Dislike'})"
+
+
+class Comment(models.Model):
+    foydalanuvchi = models.ForeignKey("Foydalanuvchi", on_delete=models.CASCADE)
+    idish = models.ForeignKey("Idish", on_delete=models.CASCADE, related_name="comments")
+    matn = models.TextField()
+    sana = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.foydalanuvchi.ism} izohi: {self.matn[:20]}..."

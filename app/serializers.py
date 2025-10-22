@@ -16,10 +16,40 @@ class RestoranSerializer(serializers.ModelSerializer):
         depth = 1 
 
 
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
+        read_only_fields = ['foydalanuvchi']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        depth = 1
+
+
 class IdishSerializer(serializers.ModelSerializer):
+    like_soni = serializers.SerializerMethodField()
+    dislike_soni = serializers.SerializerMethodField()
+    comment_soni = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Idish
         fields = "__all__"
+        depth = 1
+
+    def get_like_soni(self, obj):
+        return obj.likes.filter(like=True).count()
+
+    def get_dislike_soni(self, obj):
+        return obj.likes.filter(like=False).count()
+
+    def get_comment_soni(self, obj):
+        return obj.comments.count()
+
 
 
 class MenyuDetailSerializer(serializers.ModelSerializer):
