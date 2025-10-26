@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from .models import Restoran, Menyu, Idish, Foydalanuvchi, Buyurtma, Haydovchi, YetkazibBerish, Tolov, KoribChiqish
 from .serializers import (
     RestoranSerializer, MenyuSerializer, IdishSerializer, 
@@ -13,6 +13,8 @@ class RestoranViewSet(viewsets.ModelViewSet):
 class MenyuViewSet(viewsets.ModelViewSet):
     queryset = Menyu.objects.all()
     serializer_class = MenyuSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nom', 'tavsif']
 
 class IdishViewSet(viewsets.ModelViewSet):
     queryset = Idish.objects.all()
